@@ -47,7 +47,7 @@ def std(data: list) -> float:
     return standard_deviation(data)
 
 
-def distance(X1: tuple, X2: tuple) -> float:
+def distance(X1: tuple[float], X2: tuple[float]) -> float:
     """Calculates the distance between points X1 and X2 on euclidean space.
     
        Sizes of X1 and X2 should be equal."""
@@ -62,7 +62,7 @@ def distance(X1: tuple, X2: tuple) -> float:
         return counter ** 0.5
 
 
-def random_walk(start: tuple[float, float], weights: dict, steps = 100000, display = False) -> tuple[float, float]:
+def random_walk(start: tuple[float], weights: dict, steps = 100000, display = False) -> tuple[float]:
     """Function simulates the random walk algorithm.
 
        Dictionary of weights should contain number of steps in every side {left, right, up, down}.
