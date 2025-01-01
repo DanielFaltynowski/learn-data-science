@@ -110,3 +110,48 @@ def random_walk(start: tuple[float], weights: dict, steps = 100000, display = Fa
         
         # Return the actual position
         return (x, y)
+
+
+def derivative(f, x_0: float, delta_x = 0.0001) -> float:
+    """Function returns the derivative of the given function at specified point.
+    
+       Function must be continuous at specified point."""
+    
+    return (f(x_0 + delta_x) - f(x_0)) / delta_x
+
+
+def integral(f, a: float, b: float, delta_x = 0.0001) -> float:
+    """Function returns the integral of the given function at specified range.
+    
+       Function must be continuous at specified range."""
+    
+    counter = 0
+
+    while a <= b:
+        counter = counter + (f(a) * delta_x)
+        a = a + delta_x
+    
+    return counter
+
+
+def area_monte_carlo(f, a: float, b: float, c: float, d: float, num_samples = 1000000) -> float:
+    """Function returns the area of the given function at specified range.
+
+       Method used in the process is Monte Carlo Simulation.
+
+       Factors a, b are the range of x-axis, and factors c, d are the range of y-axis."""
+
+    within_the_area = 0
+    for sample in range(num_samples):
+        x = random.uniform(a, b)
+        y = random.uniform(c, d)
+
+        try:
+            if distance((x, 0), (x, y)) <= f(x):
+                within_the_area = within_the_area + 1
+        except ZeroDivisionError:
+            pass
+
+    estimated_area = (np.abs(a - b) * np.abs(c - d)) * (within_the_area / num_samples)
+
+    return estimated_area
