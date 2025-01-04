@@ -155,3 +155,18 @@ def area_monte_carlo(f, a: float, b: float, c: float, d: float, num_samples = 10
     estimated_area = (np.abs(a - b) * np.abs(c - d)) * (within_the_area / num_samples)
 
     return estimated_area
+
+
+def pdf_uniform(x: float, a: float, b: float) -> float:
+    if a <= x <= b:
+        return 1 / (b - a)
+    else: 
+        return 0
+
+
+def pdf_normal(x: float, mean: float, std: float) -> float:
+    return ( 2.718281828459045 ** (- ((x - mean) ** 2) / (2 * (std ** 2)))) / ( std * ((2 * 3.141592653589793) ** 0.5) )
+
+
+def pdf_exponential(x: float, l: float) -> float:
+    return l * (2.718281828459045 ** (-l * x))
