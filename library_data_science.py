@@ -192,3 +192,98 @@ def pdf_exponential(x: float, l: float) -> float:
     """The function generates the probability density function values of a exponential distribution."""
 
     return l * (2.718281828459045 ** (-l * x))
+
+
+def polynomial(x: float, factors: tuple) -> float:
+    """Function returns the value for the given polynomial.
+    
+       Variable `factors` should contain the factors of the polynomial.
+    
+       For example for 3x^3 - 8x - 1, factors = (3, 0, -8, -1).
+
+       For example for 0.5x^2 + 3x - 5, factors = (0.5, 3, -5)."""
+
+    counter = 0
+
+    for i in range(len(factors)):
+        counter = counter + ( factors[i] * (x ** (len(factors) - i - 1)) )
+    
+    return counter
+
+
+def residual_sum_of_squares(y_observed: list, y_predicted: list) -> float:
+    """Calculates the residual sum of squared of the fit for the two-dimentional dataset containing pairs of numbers (integers or/and floats).
+       
+       Represents the total error for the fit. In other words, `RSS` repserents the sum of the distances between the observed
+       and predicted values."""
+
+    if not len(y_observed) == len(y_predicted):
+        print('Invalid input!')
+    else:
+        counter = 0
+        
+        for i in range(len(y_observed)):
+            counter = counter + (y_observed[i] - y_predicted[i]) ** 2
+        
+        return counter
+
+
+def rss(y_observed: list, y_predicted: list) -> float:
+    """Calculates the residual sum of squared of the fit for the two-dimentional dataset containing pairs of numbers (integers or/and floats).
+       
+       Represents the total error for the fit. In other words, `RSS` repserents the sum of the distances between the observed
+       and predicted values."""
+    
+    return residual_sum_of_squares(y_observed, y_predicted)
+
+
+def mean_square_error(y_observed: list, y_predicted: list) -> float:
+    """Calculates the mean square of the two-dimentional dataset containing pairs of numbers (integers or/and floats).
+    
+       Represents average error for the fit. `MSE` is useful for comparing two different models for the same data. The smaller `MSE`, 
+       the better curve is fitted.
+       
+       But for large errors this measurement can be extremally bigger than it really matters for us."""
+
+    if not len(y_observed) == len(y_predicted):
+        print('Invalid input!')
+    else:
+        return residual_sum_of_squares(y_observed, y_predicted) / len(y_observed)
+
+
+def mse(y_observed: list, y_predicted: list) -> float:
+    """Calculates the mean square of the two-dimentional dataset containing pairs of numbers (integers or/and floats).
+    
+       Represents average error for the fit. `MSE` is useful for comparing two different models for the same data. The smaller `MSE`, 
+       the better curve is fitted.
+       
+       But for large errors this measurement can be extremally bigger than it really matters for us."""
+
+    return mean_square_error(y_observed, y_predicted)
+
+
+def coefficient_of_determination(y_observed: list, y_predicted: list) -> float:
+    """Calculates the coefficient of determination of the fit for the two-dimentional dataset containing pairs of numbers 
+       (integers or/and floats).
+    
+       `R^2`: Shows how good is the fit. `R^2` is intended to capture the proportion of variability in a dataset that is 
+       accounted for by the statistical model provided by the fit.
+       
+       If `R^2 = 1`, then we got perfect fit. If `R^2 = 0`, then no data changes are explained."""
+
+    if not len(y_observed) == len(y_predicted):
+        print('Invalid input!')
+    else:
+        return 1 - (residual_sum_of_squares(y_observed, y_predicted) / (lds.variance(y_observed) * len(y_observed)))
+
+
+def r_square(y_observed: list, y_predicted: list) -> float:
+    """Calculates the coefficient of determination of the fit for the two-dimentional dataset containing pairs of numbers 
+       (integers or/and floats).
+    
+       `R^2`: Shows how good is the fit. `R^2` is intended to capture the proportion of variability in a dataset that is 
+       accounted for by the statistical model provided by the fit.
+       
+       If `R^2 = 1`, then we got perfect fit. If `R^2 = 0`, then no data changes are explained."""
+
+    return coefficient_of_determination(y_observed, y_predicted)
