@@ -28,7 +28,7 @@ To run the notebooks, you need:
 
 Environment setup:  
 ```bash
-git clone https://github.com/twoje-uzytkownik/data-science-journey.git  
+git clone https://github.com/DanielFaltynowski/learn-data-science.git
 cd learn-data-science  
 pip install -r requirements.txt  
 ```
