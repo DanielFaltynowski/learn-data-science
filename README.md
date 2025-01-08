@@ -11,15 +11,15 @@ The project aims to:
 
 ## Contents  
 ### Jupyter Notebooks:  
-- **01-stochastic-thinking.ipynb**
-- **02-data-visualization.ipynb**  
-- **03-random-walks.ipynb**
-- **04-monte-carlo-simulation.ipynb** 
-- **05-distributions.ipynb**
-- **06-confidence-intervals.ipynb** 
-- **07-sampling.ipynb**
-- **08-the-central-limit-theorem.ipynb**
-- **09-linear-regression.ipynb**
+- ``01-stochastic-thinking.ipynb``
+- ``02-data-visualization.ipynb``
+- ``03-random-walks.ipynb``
+- ``04-monte-carlo-simulation.ipynb``
+- ``05-distributions.ipynb``
+- ``06-confidence-intervals.ipynb``
+- ``07-sampling.ipynb``
+- ``08-the-central-limit-theorem.ipynb``
+- ``09-linear-regression.ipynb``
 
 ## Requirements  
 To run the notebooks, you need:  
