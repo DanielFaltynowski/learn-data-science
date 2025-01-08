@@ -47,6 +47,22 @@ def std(data: list) -> float:
     return standard_deviation(data)
 
 
+def standard_error(sample: list):
+    """Calculates the standard error of the dataset containing numbers (integers or/and floats).
+       
+       Standard error measures the uncertainty of the mean estimate, which decreases as the sample size increases."""
+
+    return std(sample) / (len(sample) ** 0.5)
+
+
+def se(sample: list):
+    """Calculates the standard error of the well-selected sample from the population (dataset) containing numbers (integers or/and floats).
+       
+       Standard error measures the uncertainty of the mean estimate, which decreases as the sample size increases."""
+    
+    return standard_error(sample)
+
+
 def distance(X1: tuple[float], X2: tuple[float]) -> float:
     """Calculates the distance between points X1 and X2 on euclidean space.
     
@@ -134,7 +150,7 @@ def integral(f, a: float, b: float, delta_x = 0.0001) -> float:
     return counter
 
 
-def area_monte_carlo(f, a: float, b: float, c: float, d: float, num_samples = 1000000) -> float:
+def area_monte_carlo(f, a: float, b: float, c: float, d: float, num_points = 1000000) -> float:
     """Function returns the area of the given function at specified range.
 
        Method used in the process is Monte Carlo Simulation.
@@ -142,7 +158,7 @@ def area_monte_carlo(f, a: float, b: float, c: float, d: float, num_samples = 10
        Factors a, b are the range of x-axis, and factors c, d are the range of y-axis."""
 
     within_the_area = 0
-    for sample in range(num_samples):
+    for sample in range(num_points):
         x = random.uniform(a, b)
         y = random.uniform(c, d)
 
@@ -152,7 +168,7 @@ def area_monte_carlo(f, a: float, b: float, c: float, d: float, num_samples = 10
         except ZeroDivisionError:
             pass
 
-    estimated_area = (np.abs(a - b) * np.abs(c - d)) * (within_the_area / num_samples)
+    estimated_area = (np.abs(a - b) * np.abs(c - d)) * (within_the_area / num_points)
 
     return estimated_area
 
