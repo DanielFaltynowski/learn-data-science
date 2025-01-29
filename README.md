@@ -53,3 +53,9 @@ The project includes:
 Have questions or suggestions? Feel free to reach out to me:  
 - Email: faltynowskidaniel6@gmail.com  
 - LinkedIn: [Daniel Faltynowski](https://www.linkedin.com/in/daniel-faltynowski-2a058a26a)
+
+## References
+
+1. [John V. Guttag. Introduction to Computation and Programming Using Python With Application to Understanding Data. MIT Press. 2016](https://www.amazon.com/Introduction-Computation-Programming-Using-Python/dp/0262529629)
+
+2. [StatQuest Website](https://statquest.org)

@@ -47,12 +47,56 @@ def std(data: list) -> float:
     return standard_deviation(data)
 
 
+def var_p(data: list) -> float:
+    """Calculates the variance of the population containing numbers (integers or/and floats).
+       
+       Variance indicates how much the data values differ from the mean. The bigger variance, the more spread out the data are."""
+    
+    counter = 0
+    data_mean = mean(data)
+
+    for datum in data:
+        counter = counter + (datum - data_mean) ** 2
+
+    return counter / len(data)
+
+
+def var_s(data: list) -> float:
+    """Calculates the variance of the sample containing numbers (integers or/and floats).
+       
+       Variance indicates how much the data values differ from the mean. The bigger variance, the more spread out the data are."""
+    
+    counter = 0
+    data_mean = mean(data)
+
+    for datum in data:
+        counter = counter + (datum - data_mean) ** 2
+
+    return counter / (len(data) - 1)
+
+
+def std_p(data: list) -> float:
+    """Calculates the standard deviation of the population containing numbers (integers or/and floats).
+    
+       Standard Deviation provides an easy-to-interpret measure of dispersion expressed in the same unit as the data."""
+    
+    return var_p(data) ** 0.5
+
+
+def std_s(data: list) -> float:
+    """Calculates the standard deviation of the sample containing numbers (integers or/and floats).
+    
+       Standard Deviation provides an easy-to-interpret measure of dispersion expressed in the same unit as the data."""
+    
+    return var_s(data) ** 0.5
+
+
 def standard_error(sample: list):
     """Calculates the standard error of the dataset containing numbers (integers or/and floats).
        
        Standard error measures the uncertainty of the mean estimate, which decreases as the sample size increases."""
 
-    return std(sample) / (len(sample) ** 0.5)
+    return std_s(sample) / (len(sample) ** 0.5)
 
 
 def se(sample: list):
@@ -211,33 +255,33 @@ def polynomial(x: float, factors: tuple) -> float:
     return counter
 
 
-def residual_sum_of_squares(y_observed: list, y_predicted: list) -> float:
+def residual_sum_of_squares(Y_observed: list, Y_predicted: list) -> float:
     """Calculates the residual sum of squared of the fit for the two-dimentional dataset containing pairs of numbers (integers or/and floats).
        
        Represents the total error for the fit. In other words, `RSS` repserents the sum of the distances between the observed
        and predicted values."""
 
-    if not len(y_observed) == len(y_predicted):
+    if not len(Y_observed) == len(Y_predicted):
         print('Invalid input!')
     else:
         counter = 0
         
-        for i in range(len(y_observed)):
-            counter = counter + (y_observed[i] - y_predicted[i]) ** 2
+        for i in range(len(Y_observed)):
+            counter = counter + (Y_observed[i] - Y_predicted[i]) ** 2
         
         return counter
 
 
-def rss(y_observed: list, y_predicted: list) -> float:
+def rss(Y_observed: list, Y_predicted: list) -> float:
     """Calculates the residual sum of squared of the fit for the two-dimentional dataset containing pairs of numbers (integers or/and floats).
        
        Represents the total error for the fit. In other words, `RSS` repserents the sum of the distances between the observed
        and predicted values."""
     
-    return residual_sum_of_squares(y_observed, y_predicted)
+    return residual_sum_of_squares(Y_observed, Y_predicted)
 
 
-def mean_square_error(y_observed: list, y_predicted: list) -> float:
+def mean_square_error(Y_observed: list, Y_predicted: list) -> float:
     """Calculates the mean square of the two-dimentional dataset containing pairs of numbers (integers or/and floats).
     
        Represents average error for the fit. `MSE` is useful for comparing two different models for the same data. The smaller `MSE`, 
@@ -245,13 +289,13 @@ def mean_square_error(y_observed: list, y_predicted: list) -> float:
        
        But for large errors this measurement can be extremally bigger than it really matters for us."""
 
-    if not len(y_observed) == len(y_predicted):
+    if not len(Y_observed) == len(Y_predicted):
         print('Invalid input!')
     else:
-        return residual_sum_of_squares(y_observed, y_predicted) / len(y_observed)
+        return residual_sum_of_squares(Y_observed, Y_predicted) / len(Y_observed)
 
 
-def mse(y_observed: list, y_predicted: list) -> float:
+def mse(Y_observed: list, Y_predicted: list) -> float:
     """Calculates the mean square of the two-dimentional dataset containing pairs of numbers (integers or/and floats).
     
        Represents average error for the fit. `MSE` is useful for comparing two different models for the same data. The smaller `MSE`, 
@@ -259,10 +303,10 @@ def mse(y_observed: list, y_predicted: list) -> float:
        
        But for large errors this measurement can be extremally bigger than it really matters for us."""
 
-    return mean_square_error(y_observed, y_predicted)
+    return mean_square_error(Y_observed, Y_predicted)
 
 
-def coefficient_of_determination(y_observed: list, y_predicted: list) -> float:
+def coefficient_of_determination(Y_observed: list, Y_predicted: list) -> float:
     """Calculates the coefficient of determination of the fit for the two-dimentional dataset containing pairs of numbers 
        (integers or/and floats).
     
@@ -271,13 +315,13 @@ def coefficient_of_determination(y_observed: list, y_predicted: list) -> float:
        
        If `R^2 = 1`, then we got perfect fit. If `R^2 = 0`, then no data changes are explained."""
 
-    if not len(y_observed) == len(y_predicted):
+    if not len(Y_observed) == len(Y_predicted):
         print('Invalid input!')
     else:
-        return 1 - (residual_sum_of_squares(y_observed, y_predicted) / (lds.variance(y_observed) * len(y_observed)))
+        return 1 - (residual_sum_of_squares(Y_observed, Y_predicted) / (variance(Y_observed) * len(Y_observed)))
 
 
-def r_square(y_observed: list, y_predicted: list) -> float:
+def r_square(Y_observed: list, Y_predicted: list) -> float:
     """Calculates the coefficient of determination of the fit for the two-dimentional dataset containing pairs of numbers 
        (integers or/and floats).
     
@@ -286,4 +330,4 @@ def r_square(y_observed: list, y_predicted: list) -> float:
        
        If `R^2 = 1`, then we got perfect fit. If `R^2 = 0`, then no data changes are explained."""
 
-    return coefficient_of_determination(y_observed, y_predicted)
+    return coefficient_of_determination(Y_observed, Y_predicted)
