@@ -20,6 +20,9 @@ The project aims to:
 - ``07-sampling.ipynb``
 - ``08-the-central-limit-theorem.ipynb``
 - ``09-linear-regression.ipynb``
+- ``10-cross-validation.ipynb``
+- ``11-clustering.ipynb``
+- ``12-classification.ipynb``
 
 ## Requirements  
 To run the notebooks, you need:  
@@ -58,4 +61,6 @@ Have questions or suggestions? Feel free to reach out to me:
 
 1. [John V. Guttag. Introduction to Computation and Programming Using Python With Application to Understanding Data. MIT Press. 2016](https://www.amazon.com/Introduction-Computation-Programming-Using-Python/dp/0262529629)
 
-2. [StatQuest Website](https://statquest.org)
+2. [Joel Grus. Data Science from Scratch First Principles with Python. O'Reilly. 2019](https://www.amazon.com/Data-Science-Scratch-Principles-Python/dp/149190142X)
+
+3. [StatQuest Website](https://statquest.org)
