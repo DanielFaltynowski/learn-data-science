@@ -64,3 +64,5 @@ Have questions or suggestions? Feel free to reach out to me:
 2. [Joel Grus. Data Science from Scratch First Principles with Python. O'Reilly. 2019](https://www.amazon.com/Data-Science-Scratch-Principles-Python/dp/149190142X)
 
 3. [StatQuest Website](https://statquest.org)
+
+4. [Coursera - IBM Data Science Professional Certificate](https://www.coursera.org/professional-certificates/ibm-data-science)
