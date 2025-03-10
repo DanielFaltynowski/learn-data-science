@@ -331,3 +331,195 @@ def r_square(Y_observed: list, Y_predicted: list) -> float:
        If `R^2 = 1`, then we got perfect fit. If `R^2 = 0`, then no data changes are explained."""
 
     return coefficient_of_determination(Y_observed, Y_predicted)
+
+
+def cross_validation(X_train: list, Y_train: list, X_test: list, Y_test: list, trials = 10, display = False) -> list:
+    """Performs cross-validation on the dataset, fitting polynomial models of varying degrees to the training data, 
+    testing on the test set, and selecting the best model based on R-squared and MSE.
+    
+    Args:
+        X_train (list): List of input values for training.
+        Y_train (list): List of output values for training.
+        X_test (list): List of input values for testing.
+        Y_test (list): List of output values for testing.
+        trials (int): Number of trials to perform (default is 10).
+        display (bool): Whether to plot the results (default is False).
+        
+    Returns:
+        tuple: Contains the best model coefficients, MSE, R-squared, and the number of coefficients.
+    """
+
+    r_square = 0
+    mse = 0
+    factors = []
+
+    for n in range(1, trials + 1):
+        factors_predicted = np.polyfit(X_train, Y_train, n)
+        Y_predicted_test = [ polynomial(x, factors_predicted) for x in X_test ]
+        mse_current = mse(Y_test, Y_predicted_test)
+        r_square_current = r_square(Y_test, Y_predicted_test)
+
+        if r_square < r_square_current:
+            mse = mse_current
+            r_square = r_square_current
+            factors = factors_predicted
+        
+        if r_square == 0:
+            if mse < mse_current:
+                mse = mse_current
+                r_square = r_square_current
+                factors = factors_predicted
+        
+        if display:
+            X = np.linspace(min(X_test), max(X_test), num = 1000)
+            Y = [ polynomial(x, factors_predicted) for x in X]
+
+            plt.scatter(X_test, Y_test)
+            plt.plot(X, Y, color = 'red', label = f'n = {n}, MSE = {np.round(mse_current, 3)}, R^2 = {np.round(r_square_current, 3)}')
+
+            plt.legend()
+            plt.xlabel('X_test')
+            plt.ylabel('Y_test')
+            plt.show()
+    
+    result_factors = [ float(datum) for datum in factors ]
+    result_mse = float(mse)
+    result_r_square = float(r_square)
+    
+    return result_factors, result_mse, result_r_square, len(result_factors)
+
+
+def best_cross_validation(results: tuple, by_mse = False) -> tuple:
+    """Selects the best model from a set of cross-validation results based on either MSE or R-squared.
+    
+    Args:
+        results (tuple): List of tuples containing model factors, MSE, and R-squared.
+        by_mse (bool): Whether to select the model based on the lowest MSE (default is False, which selects by highest R-squared).
+        
+    Returns:
+        tuple: The best model from the results based on the selected criteria.
+    """
+
+    best = results[0]
+    if by_mse:
+        for result in results:
+            if result[1] < best[1]:
+                best = result
+    else:
+        for result in results:
+            if result[2] > best[2]:
+                best = result
+    return best
+
+
+def leave_one_out_cross_validation(X: list, Y: list, trials = 10, display = False) -> list:
+    """Performs Leave-One-Out Cross-Validation on the dataset, training and testing on all subsets of the data.
+    
+    Args:
+        X (list): List of input values.
+        Y (list): List of output values.
+        trials (int): Number of trials for each split (default is 10).
+        display (bool): Whether to plot the results (default is False).
+        
+    Returns:
+        list: A list of models (factors, MSE, R-squared) for each leave-one-out split.
+    """
+
+    results = []
+
+    for i in range(len(X)):
+        X_train = []
+        Y_train = []
+        X_test = []
+        Y_test = []
+
+        for j in range(len(X)):
+            if i == j:
+                X_test.append(X[j])
+                Y_test.append(Y[j])
+            else:
+                X_train.append(X[j])
+                Y_train.append(Y[j])
+        
+        model = cross_validation(X_train, Y_train, X_test, Y_test, trials, display)
+        
+        results.append(model)
+    
+    return list(results)
+
+
+def k_fold_cross_validation(X: list, Y: list, k: int, trials = 10, display = False) -> list:
+    """Performs k-fold cross-validation on the dataset, splitting the data into k folds for training and testing.
+    
+    Args:
+        X (list): List of input values.
+        Y (list): List of output values.
+        k (int): Number of folds for cross-validation.
+        trials (int): Number of trials for each split (default is 10).
+        display (bool): Whether to plot the results (default is False).
+        
+    Returns:
+        list: A list of models (factors, MSE, R-squared) for each fold.
+    """
+
+    results = []
+
+    for i in range(k):
+        X_train = []
+        Y_train = []
+        X_test = []
+        Y_test = []
+
+        for j in range(len(X)):
+            if (j + i) % k == 0:
+                X_test.append(X[j])
+                Y_test.append(Y[j])
+            else:
+                X_train.append(X[j])
+                Y_train.append(Y[j])
+        
+        model = cross_validation(X_train, Y_train, X_test, Y_test, trials, display)
+        
+        results.append(model)
+    
+    return list(results)
+
+
+def repeated_random_sampling(X: list, Y: list, num_samples: int, sample_size: int, trials = 10, display = False) -> list:
+    """Performs repeated random sampling cross-validation on the dataset, randomly selecting subsets of the data for training and testing.
+    
+    Args:
+        X (list): List of input values.
+        Y (list): List of output values.
+        num_samples (int): Number of random samples to create.
+        sample_size (int): Size of each sample (training and testing).
+        trials (int): Number of trials for each split (default is 10).
+        display (bool): Whether to plot the results (default is False).
+        
+    Returns:
+        list: A list of models (factors, MSE, R-squared) for each sample.
+    """
+    
+    results = []
+
+    for i in range(num_samples):
+        indexes = random.sample(list(range(len(X))), sample_size)
+
+        X_test = []
+        Y_test = []
+        X_train = []
+        Y_train = []
+
+        for j in range(len(X)):
+            if j in indexes:
+                X_test.append(X[j])
+                Y_test.append(Y[j])
+            else:
+                X_train.append(X[j])
+                Y_train.append(Y[j])
+        
+        model = cross_validation(X_train, Y_train, X_test, Y_test, trials, display)
+        
+        results.append(model)
+    
+    return list(results)
