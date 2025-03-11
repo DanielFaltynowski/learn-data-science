@@ -21,8 +21,9 @@ The project aims to:
 - ``08-the-central-limit-theorem.ipynb``
 - ``09-linear-regression.ipynb``
 - ``10-cross-validation.ipynb``
-- ``11-clustering.ipynb``
-- ``12-classification.ipynb``
+- ``11-machine-learning.ipynb``
+- ``12-clustering.ipynb``
+- ``13-classification.ipynb``
 
 ## Requirements  
 To run the notebooks, you need:  
