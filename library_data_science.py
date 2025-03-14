@@ -523,3 +523,172 @@ def repeated_random_sampling(X: list, Y: list, num_samples: int, sample_size: in
         results.append(model)
     
     return list(results)
+
+
+def get_classes(C_observed: list, C_predicted: list) -> list:
+    """
+    Returns a list of unique classes found in both observed and predicted labels.
+    
+    Parameters:
+    C_observed (list): List of observed class labels.
+    C_predicted (list): List of predicted class labels.
+    
+    Returns:
+    list: A list of unique class labels.
+    """
+
+    classes = []
+
+    for c in C_observed:
+        if c not in classes:
+            classes.append(c)
+
+    for c in C_predicted:
+        if c not in classes:
+            classes.append(c)
+    
+    return classes
+
+
+def print_matrix(matrix):
+    """
+    Prints a given matrix row by row.
+    
+    Parameters:
+    matrix (list of lists): The matrix to be printed.
+    """
+
+    for row in matrix:
+        print(row)
+
+
+def confusion_matrix(C_observed: list, C_predicted: list) -> list:
+    """
+    Computes the confusion matrix for the given observed and predicted labels.
+    
+    Parameters:
+    C_observed (list): List of observed class labels.
+    C_predicted (list): List of predicted class labels.
+    
+    Returns:
+    tuple: A tuple containing the confusion matrix (list of lists) and a dictionary 
+           mapping class labels to matrix indices.
+    """
+
+    classes = get_classes(C_observed, C_predicted)
+    indexes = {}
+
+    for i in range(len(classes)):
+        c = classes[i]
+        indexes[c] = i
+    
+    cm = [ [0] * len(classes) for i in range(len(classes)) ]
+
+    for i in range(len(C_observed)):
+        cm[indexes[C_observed[i]]][indexes[C_predicted[i]]] = cm[indexes[C_observed[i]]][indexes[C_predicted[i]]] + 1
+
+    return (cm, indexes)
+
+
+def accuracy(C_observed: list, C_predicted: list) -> float:
+    """
+    Calculates the accuracy of the classification.
+    
+    Parameters:
+    C_observed (list): List of observed class labels.
+    C_predicted (list): List of predicted class labels.
+    
+    Returns:
+    float: Accuracy of the classification.
+    """
+
+    cm = confusion_matrix(C_observed, C_predicted)[0]
+
+    T = 0
+
+    for i in range(len(cm)):
+        T = T + cm[i][i]
+    
+    F = 0
+
+    for i in range(len(cm)):
+        for j in range(len(cm)):
+            if not i == j:
+                F = F + cm[i][j]
+    
+    return (T) / (T + F)
+
+
+def precision(C_observed: list, C_predicted: list, c) -> float:
+    """
+    Computes the precision for a specific class.
+    
+    Parameters:
+    C_observed (list): List of observed class labels.
+    C_predicted (list): List of predicted class labels.
+    c: The class for which precision is calculated.
+    
+    Returns:
+    float: Precision score for the specified class.
+    """
+
+    cm, indexes = confusion_matrix(C_observed, C_predicted)
+
+    i = indexes[c]
+
+    T = cm[i][i]
+
+    F = 0
+
+    for j in range(len(cm)):
+        if not i == j:
+            F = F + cm[j][i]
+    
+    return (T) / (T + F)
+
+
+def recall(C_observed: list, C_predicted: list, c) -> float:
+    """
+    Computes the recall for a specific class.
+    
+    Parameters:
+    C_observed (list): List of observed class labels.
+    C_predicted (list): List of predicted class labels.
+    c: The class for which recall is calculated.
+    
+    Returns:
+    float: Recall score for the specified class.
+    """
+    cm, indexes = confusion_matrix(C_observed, C_predicted)
+
+    i = indexes[c]
+
+    T = cm[i][i]
+
+    F = 0
+
+    for j in range(len(cm)):
+        if not i == j:
+            F = F + cm[i][j]
+    
+    return (T) / (T + F)
+
+
+def f1_score(C_observed: list, C_predicted: list, c) -> float:
+    """
+    Computes the F1-score for a specific class.
+    
+    Parameters:
+    C_observed (list): List of observed class labels.
+    C_predicted (list): List of predicted class labels.
+    c: The class for which the F1-score is calculated.
+    
+    Returns:
+    float: F1-score for the specified class.
+    """
+
+    prec = precision(C_observed, C_predicted, c)
+    rec = recall(C_observed, C_predicted, c)
+
+    return (2 * prec * rec) / (prec + rec)
+
